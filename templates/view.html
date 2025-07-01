@@ -1,0 +1,174 @@
+{% include 'header.html' %}
+
+    <body>
+
+        <header>
+            <button class="home-button" onclick="location.href='/'">Home</button>
+        </header>
+
+        <div class="center-text">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <h2 class="flash-message">{{ message }}</h2>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="center-text">
+            <img id="logo" src="/static/Rr..png">
+
+            <h1>View previous reviews</h1>
+        </div>
+        
+        <label class= "text" for="sort-rating">Sort by rating: </label>
+
+        <select id="sort-rating" onchange="sortTable()">
+            <option value="reset">Default</option>
+            <option value="desc">Highest to lowest</option>
+            <option value="asc">Lowest to highest</option>
+        </select>
+
+        <br><br>
+
+        <form onsubmit="event.preventDefault(); filterSearch()">
+            <input type="text" id="search-value" placeholder="Search">
+            <button id="search-button" type="submit">Search</button> 
+        </form>
+
+        <br><br>
+
+        <table id="data-table">
+            <thead class="table-header">
+                <tr>
+                    <th class="table-name">Name</th>
+                    <th class="table-suburb">Suburb</th>
+                    <th class="table-city">City</th>
+                    <th class="table-cuisine">Cuisine</th>
+                    <th class="table-rating">Rating</th>
+                    <th class="table-comments">Comments</th>
+                </tr>
+            </thead>
+            <tbody class="table-cells" >
+                {% for i in reviews_list %}
+                <div>
+                    <tr onclick="openOverlay('/restaurant/{{ i.name }}/{{ i.suburb }}/{{ i.city }}.html')">
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.suburb }}</td>
+                        <td>{{ i.city }}</td>
+                        <td>{{ i.cuisine }}</td>
+                        <td>{{ i.rating }}</td>
+                        <td>{{ i.comment }}</td>
+                    </tr>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+
+        <div id="overlay">
+            <button id="close-overlay-button" onclick="closeOverlay()">x</button>
+            <iframe id="iframe-overlay" src=""></iframe>
+        </div>
+
+
+      <!--Function to store the orginal table to reset once the option is places of 'default'-->
+      <!--Function to sort the table based on the rating-->
+      <script>
+          let originalRows = [];
+  
+          function storeOriginalTable() {
+              const table = document.getElementById('data-table');
+              originalRows = Array.from(table.querySelectorAll('tbody tr'));
+          }
+  
+          function restoreOriginalTable() {
+              const table = document.getElementById('data-table');
+              const tbody = table.querySelector('tbody');
+              tbody.innerHTML = "";
+              originalRows.forEach(row => tbody.appendChild(row));
+  
+          }
+
+        
+          function sortTable() {
+              const table = document.getElementById('data-table');
+              const rows = Array.from(table.querySelectorAll('tbody tr'));
+              const sortOption = document.getElementById('sort-rating').value;
+  
+              if (sortOption == "reset") {
+                  restoreOriginalTable();
+                  return;
+              }
+  
+              rows.sort((rowA, rowB) => {
+                  const ratingA = parseFloat(rowA.cells[4].textContent);
+                  const ratingB = parseFloat(rowB.cells[4].textContent);
+                  // ternery operator acting as an if statement 
+                  return sortOption === "asc" ? ratingA - ratingB : ratingB - ratingA; 
+              }); 
+  
+              const tbody = table.querySelector('tbody');
+              tbody.innerHTML = "";
+              rows.forEach(row => tbody.appendChild(row));
+          }
+  
+          window.onload = storeOriginalTable;
+        
+      </script>
+
+
+      <!--Function to filter the table using search-->
+      <script>
+        
+          function filterSearch() {
+              const input = document.getElementById('search-value');
+              const filter = input.value.toLowerCase();
+              const table = document.getElementById('data-table');
+              const rows = table.getElementsByTagName('tr');
+  
+              for (let i = 1; i < rows.length; i++) {
+                  const row = rows[i];
+                  const cells = row.getElementsByTagName('td');
+                  let match = false;
+  
+                  for (let j = 0; j < cells.length; j++) {
+                      const text = cells[j].textContent || cells[j].innerText;
+                      if (text.toLowerCase().includes(filter)) {
+                          match = true;
+                          break;
+                      }
+                  }
+                  row.style.display = match ? "" : "none";
+              }
+          }    
+  
+      </script>
+  
+
+      <!--Function to open the overlay over the current webpage-->
+      <script>
+          
+          function openOverlay(src) {
+              const overlay = document.getElementById('overlay');
+              const iframe = document.getElementById('iframe-overlay');
+  
+              iframe.src = src;
+              overlay.style.display = 'flex';
+          }
+        
+  
+          function closeOverlay() {
+              const overlay = document.getElementById('overlay');  
+              const iframe = document.getElementById('iframe-overlay');  
+  
+              overlay.style.display = 'none';
+              iframe.src = '';
+          }
+        
+      </script>
+
+    </body>
+
+{% include 'footer.html' %}
