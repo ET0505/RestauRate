@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+      
+        <title>Restaurant</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/static/style.css">
+
+        <script>
+            // Function to retrieve the API key from the backend 
+            async function loadMap() {
+                const response = await fetch('/config');
+                const data = await response.json();
+                const maps_key = data.api_key;
+
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${maps_key}&callback=initMap`;
+                script.async = true;
+                script.defer = true;
+
+                document.head.append(script);
+            }
+
+          
+            // Function to initialise the map
+            window.initMap = function() {
+                const location = { lat: 0, lng: 0 };
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: location
+                });
+
+                const geocoder = new google.maps.Geocoder();
+                const address = {{ (restaurant[1] ~ ' ' ~ restaurant[2] ~ ' ' ~ restaurant[3]) | tojson }};
+
+                geocoder.geocode({address: address}, function(results, status) {
+                    if (status == 'OK') {
+                        map.setCenter(results[0].geometry.location);
+                        new google.maps.Marker({ position: results[0].geometry.location, map: map});
+                    } else {
+                        console.error("Geocode was not successful for the following reason: " + status);
+                    }
+                });
+                
+            }
+            
+            window.onload = loadMap;
+        </script>
+      
+    </head>
+
+    <body>
+        
+        <div class="center-text">
+
+            <img id="logo" src="/static/Rr..png">
+
+            <h1>{{ restaurant[1] }} Details</h1>
+
+            <p><strong>Name:</strong> {{ restaurant[1] }}</p>
+            <p><strong>Suburb:</strong> {{ restaurant[2] }}</p>
+            <p><strong>City:</strong> {{ restaurant[3] }}</p>
+            <p><strong>Cuisine:</strong> {{ restaurant[4] }}</p>
+            <p><strong>Rating:</strong> {{ restaurant[5] }}</p>
+            <p><strong>Comment:</strong> {{ restaurant[6] }}</p>
+
+        </div>
+        
+        <div class="container">
+            <div id="map" style="width:70%; height:500px;"></div>
+        </div>
+
+    </body>
+
+{% include 'footer.html' %}
