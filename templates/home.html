@@ -1,0 +1,25 @@
+{% include 'header.html' %}
+
+    <body>
+        <header>
+            <button id="login-button" onclick="location.href='login.html'">Admin login</button>
+        </header>
+
+        <div class="center-text">
+            <img id="logo" src="/static/Rr..png">
+
+            <h1 class="center-text">Welcome to RestauRate</h1>
+            <p>This web-based application allows you to rate, comment on, and keep track of restaurants!</p>
+        </div>
+      
+        <br><br>
+
+        <div class="center-text">
+            <button class="home-option-buttons" onclick="location.href='review.html'">Generate new review</button> 
+            <br><br>
+            <button class="home-option-buttons" onclick="location.href='view.html'">View existing reviews</button>
+        </div>
+    
+    </body>
+
+{% include 'footer.html' %}
