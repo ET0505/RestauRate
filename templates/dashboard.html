@@ -1,0 +1,77 @@
+{% include 'header.html' %}
+
+    <body>
+
+        <header>
+            <button id="logout-button" onclick="location.href='logout'">Log out</button>
+        </header>
+
+        <div class="center-text">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <h2 class="flash-message">{{ message }}</h2>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="center-text">
+            <img id="logo" src="/static/Rr..png">
+            
+            <h1>Welcome to Restaurant Rater - Admin View</h1>
+        </div>
+
+        <p><strong>Total reviews:</strong> {{ total_number }}</p>
+
+        <br>
+
+        <!--Must be an exact match - No whitespaces or case alternatives-->
+        <p><strong>Find average rating:</strong></p>
+        <form method="POST">
+            <input id="search-value" name="restaurant-name" placeholder="Restaurant name">
+            <input id="search-value" name="restaurant-suburb" placeholder="Restaurant suburb">
+            <input id="search-value" name="restaurant-city" placeholder="Restaurant city">
+            <button id="search-button" name="find-average" type="submit">Search</button>
+        </form>
+
+        <br>
+
+        <p><strong>Deletion of review:</strong></p>
+        <form method="POST">
+            <input id="search-value" name="delete-id" type="number" placeholder="Enter review id for deletion">
+            <button id="search-button" name="delete-review" type="submit">Delete</button>
+        </form>
+
+        <br>
+
+        <table id="admin-table">
+            <thead>
+                <tr>
+                    <th class="table-id">id</th>
+                    <th class="table-name">Name</th>
+                    <th class="table-suburb">Suburb</th>
+                    <th class="table-city">City</th>
+                    <th class="table-cuisine">Cuisine</th>
+                    <th class="table-rating">Rating</th>
+                    <th class="table-comments">Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in admin_reviews_list %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.suburb }}</td>
+                        <td>{{ i.city }}</td>
+                        <td>{{ i.cuisine }}</td>
+                        <td>{{ i.rating }}</td>
+                        <td>{{ i.comment }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </body>
+
+{% include 'footer.html' %}
