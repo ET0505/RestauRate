@@ -1,0 +1,35 @@
+{% include 'header.html' %}
+
+    <body>
+
+        <header>
+            <button class="home-button" onclick="location.href='/'">Home</button>
+        </header>
+        
+        <div class="center-text">
+            <img id="logo" src="/static/Rr..png">
+
+            <h1>Create a new review</h1>
+        </div>
+
+        <div class="center-text">
+            <form class="review" method="POST" action="">
+                <input class="review-input" type="text" name="name" placeholder="Restaurant name" autofocus required>
+                <br><br>
+                <input class="review-input" type="text" name="suburb" placeholder="Suburb" autofocus required>
+                <br><br>
+                <input class="review-input" type="text" name="city" placeholder="City" autofocus required>
+                <br><br>
+                <input class="review-input" type="text" name="cuisine" placeholder="Cuisine" autofocus required>
+                <br><br>
+                <input class="review-input" type="number" name="rating" placeholder="Rating" autofocus required>
+                <br><br>
+                <input class="review-input" type="text" name="comment" placeholder="Comments">
+                <br><br>
+                <button class="submit-button">Submit</button>
+            </form>
+        </div>
+      
+    </body>
+
+</html>
