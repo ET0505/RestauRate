@@ -3,6 +3,7 @@
 RestauRate is a web-based application that enables users to generate reviews for restaurants based on the restaurant's name, suburb, city, cuisine, rating, and any comments. Users are also able to view the details of each previous review and pinpoint the location of the restaurant on an interactive map. Administrators can access a dashboard through login, and be able to view analytics and delete user-generated reviews. 
 
 This personal project was brought to life from my love of trying new places and foods, as well as my passion for developing new technical skills and creating a useful product that people would use. I hope you like it!
+https://restaurate-614c59114b94.herokuapp.com/
 
 ## Functionalities
 Users can:
